@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="700" height="393"></canvas>
+    <canvas id="canvas" width="920" height="580"></canvas>
 
     <script>
 
@@ -59,6 +59,7 @@
         var lightStrength = 1.0;
 
 
+        //The complex 3d geometries like house1, sphere were fetched from internet or created by chatgpd
         let house1 = {
             "shading": "smooth",
             "vertices": [
@@ -73,38 +74,37 @@
                 [-1.0, 1.0, 1.0],   // 7
                 
                 // Roof vertices
-                [-1.0, -1.0, 1.0],  // 8
-                [1.0, -1.0, 1.0],   // 9
-                [-1.0, 1.0, 1.0],    // 10
-                [1.0, 1.0, 1.0],   // 11
-                [0.0, 0.0, 2.5]     // 12 (roof peak)
+                [-1.0, -1.0, 1.0],  
+                [1.0, -1.0, 1.0],  
+                [-1.0, 1.0, 1.0], 
+                [1.0, 1.0, 1.0],  
+                [0.0, 0.0, 2.5]    
             ],
             "triangles": [
-                // Cube base
-                [0, 1, 5], [0, 5, 4], // Bottom face
-                [1, 2, 6], [1, 6, 5], // Right face
-                [2, 3, 7], [2, 7, 6], // Top face
-                [3, 0, 4], [3, 4, 7], // Left face
+                // base
+                [0, 1, 5], [0, 5, 4], 
+                [1, 2, 6], [1, 6, 5], 
+                [2, 3, 7], [2, 7, 6], 
+                [3, 0, 4], [3, 4, 7],
 
-                // Roof
                 [8, 9, 12], [12, 10, 8],
                 [9, 11, 12], [12, 11, 10]
 
             ],
             "vertex_colors": [
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [1.0, 0.0, 0.0, 1.0], // Red
-                [0.0, 0.0, 0.0, 1.0], // Red (roof)
-                [0.0, 0.0, 0.0, 1.0], // Red (roof)
-                [0.0, 0.0, 0.0, 1.0], // Red (roof)
-                [0.0, 0.0, 0.0, 1.0], // Red (roof)
-                [0.0, 0.0, 0.0, 1.0]  // Red (roof peak)
+                [1.0, 0.0, 0.0, 1.0], 
+                [1.0, 0.0, 0.0, 1.0],
+                [1.0, 0.0, 0.0, 1.0], 
+                [1.0, 0.0, 0.0, 1.0],
+                [1.0, 0.0, 0.0, 1.0], 
+                [1.0, 0.0, 0.0, 1.0],
+                [1.0, 0.0, 0.0, 1.0], 
+                [1.0, 0.0, 0.0, 1.0], 
+                [0.0, 0.0, 0.0, 1.0], 
+                [0.0, 0.0, 0.0, 1.0],
+                [0.0, 0.0, 0.0, 1.0], 
+                [0.0, 0.0, 0.0, 1.0],  
+                [0.0, 0.0, 0.0, 1.0]  
             ]
         }
 
@@ -146,9 +146,7 @@
             ]
         };
 
-
         cube1 = {
-
             "renderingType" : "solid",
             "shading" : "smooth",
             "vertices": [
@@ -181,7 +179,9 @@
             ]
         }
 
-        //this function was created mostly by chatGPT, might have bug
+        //this function was created partly by chatGPT, might have bug
+        //I did not pay too much attention to generate the geometries datastructures themselfes, mostly 
+        //focused on the actual rendering process
         function generateSphere(subdiv_count) {
             const sphere = {
                 shading: "flat",
@@ -240,8 +240,7 @@
             return sphere;
         }
 
-
-        const sphere12 = generateSphere(7); // Adjust the subdivision count as needed
+        const sphere12 = generateSphere(7);
 
         var jsonobjs = [sphere12, cube1, house1, sphere1]
         var objIdCounter = 0;
@@ -286,15 +285,15 @@
                 }
             }
 
-            kameraPos = rotateVectorAroundZAxis(kameraPos, 0.02)
+            kameraPos = rotateVectorAroundZAxis(kameraPos, 0.01)
 
             kameraPos[2] = 4 +  3*Math.sin(performance.now() /1000); 
 
             changeCameraRotation(vektorScala(kameraPos, -1))
 
-            directionalLigit = rotateVectorAroundXAxis(directionalLigit,0.1)
-            directionalLigit = rotateVectorAroundYAxis(directionalLigit,0.1)
-            directionalLigit = rotateVectorAroundZAxis(directionalLigit,0.1)
+            directionalLigit = rotateVectorAroundXAxis(directionalLigit,0.04)
+            directionalLigit = rotateVectorAroundYAxis(directionalLigit,0.051)
+            directionalLigit = rotateVectorAroundZAxis(directionalLigit,0.05)
 
             drawShape(objects[3]);
             drawShape(objects[2]);
@@ -516,6 +515,7 @@
             return rotatedVector;
         }
 
+        //hitta pixlarna för en triangels sidor
         function drawTriangleLine(triangle, vertexColors, faceNormal, vertexNormals){
 
             var pixelCords = triangle.map(v => {
@@ -703,7 +703,8 @@
             return numberOfPixels;
         }
 
-        //bresenham baserad
+        //bresenham baserad algoritm för att hitta pixlarna mellan två pixlar i en linje. Denna funktion 
+        //blandar också vertex färger, ljusstyrka i hörnen för smooth shading
         function getLinePixels(x0, y0, x1, y1, color1, color2, dist1, dist2, vInst1, vInst2) {
             
             let [r1, g1, b1] = color1;
@@ -775,6 +776,7 @@
             return resres
         }
 
+        //standard steriografisk projection till skärm
         function projecttoScreen(coord){
 
             var relativKamPos = vektorSubtraction(coord, kameraPos)
